@@ -1,0 +1,33 @@
+{
+  "name": "bookingbug-angular-admin",
+  "version": "0.0.25",
+  "homepage": "https://github.com/BookingBug/bookingbug-angular-admin-bower",
+  "authors": [
+    "Glenn Shoosmith <glenn@bookingbug.com>",
+    "Ed Clements <ed@bookingbug.com>"
+  ],
+  "main": [
+    "bookingbug-angular-admin.js",
+    "bookingbug-angular-admin-templates.js"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bookingbug-angular-core": "0.0.25"
+  },
+  "_release": "0.0.25",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.25",
+    "commit": "f4d1b215670a791620f7be45fff604c3a2ec3881"
+  },
+  "_source": "git://github.com/BookingBug/bookingbug-angular-admin-bower.git",
+  "_target": "0.0.25",
+  "_originalSource": "bookingbug-angular-admin"
+}
