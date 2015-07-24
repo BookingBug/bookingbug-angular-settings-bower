@@ -69,13 +69,13 @@
 
 (function() {
   'use strict';
-  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty;
+  var __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    __hasProp = {}.hasOwnProperty;
 
   angular.module('BB.Models').factory("Admin.AdministratorModel", function($q, BBModel, BaseModel) {
     var Admin_Administrator;
-    return Admin_Administrator = (function(superClass) {
-      extend(Admin_Administrator, superClass);
+    return Admin_Administrator = (function(_super) {
+      __extends(Admin_Administrator, _super);
 
       function Admin_Administrator(data) {
         Admin_Administrator.__super__.constructor.call(this, data);
@@ -90,13 +90,13 @@
 
 (function() {
   'use strict';
-  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty;
+  var __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    __hasProp = {}.hasOwnProperty;
 
   angular.module('BB.Models').factory("Admin.UserModel", function($q, BBModel, BaseModel) {
     var Admin_User;
-    return Admin_User = (function(superClass) {
-      extend(Admin_User, superClass);
+    return Admin_User = (function(_super) {
+      __extends(Admin_User, _super);
 
       function Admin_User(data) {
         Admin_User.__super__.constructor.call(this, data);
@@ -130,13 +130,13 @@
           return collection.$get('administrators').then(function(administrators) {
             var a, models;
             models = (function() {
-              var i, len, results;
-              results = [];
-              for (i = 0, len = administrators.length; i < len; i++) {
-                a = administrators[i];
-                results.push(new BBModel.Admin.Administrator(a));
+              var _i, _len, _results;
+              _results = [];
+              for (_i = 0, _len = administrators.length; _i < _len; _i++) {
+                a = administrators[_i];
+                _results.push(new BBModel.Admin.Administrator(a));
               }
-              return results;
+              return _results;
             })();
             return defer.resolve(models);
           }, function(err) {
