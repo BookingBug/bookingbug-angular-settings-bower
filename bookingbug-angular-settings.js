@@ -2,16 +2,17 @@
   'use strict';
   angular.module('BBAdminSettings', ['BB', 'BBAdmin.Services', 'BBAdmin.Filters', 'BBAdmin.Controllers', 'trNgGrid']);
 
-  angular.module('BBAdminSettings').config(["$logProvider", function($logProvider) {
+  angular.module('BBAdminSettings').config(function($logProvider) {
     return $logProvider.debugEnabled(true);
-  }]);
+  });
 
   angular.module('BBAdminSettingsMockE2E', ['BBAdminSettings', 'BBAdminMockE2E']);
 
 }).call(this);
 
 (function() {
-  angular.module('BBAdminSettings').directive('adminTable', ["AdminCompanyService", "AdminAdministratorService", "$modal", "$log", "ModalForm", function(AdminCompanyService, AdminAdministratorService, $modal, $log, ModalForm) {
+  'use strict';
+  angular.module('BBAdminSettings').directive('adminTable', function($log, ModalForm, BBModel) {
     var controller, link;
     controller = function($scope) {
       $scope.getAdministrators = function() {
@@ -19,7 +20,7 @@
         params = {
           company: $scope.company
         };
-        return AdminAdministratorService.query(params).then(function(administrators) {
+        return BBModel.Admin.Administrator.$query(params).then(function(administrators) {
           $scope.admin_models = administrators;
           return $scope.administrators = _.map(administrators, function(administrator) {
             return _.pick(administrator, 'id', 'name', 'email', 'role');
@@ -52,7 +53,7 @@
       if (scope.company) {
         return scope.getAdministrators();
       } else {
-        return AdminCompanyService.query(attrs).then(function(company) {
+        return BBModel.Admin.Company.$query(attrs).then(function(company) {
           scope.company = company;
           return scope.getAdministrators();
         });
@@ -63,7 +64,7 @@
       link: link,
       templateUrl: 'admin_table_main.html'
     };
-  }]);
+  });
 
 }).call(this);
 
@@ -72,7 +73,7 @@
   var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
-  angular.module('BB.Models').factory("Admin.AdministratorModel", ["$q", "BBModel", "BaseModel", function($q, BBModel, BaseModel) {
+  angular.module('BB.Models').factory("Admin.AdministratorModel", function($q, AdminAdministratorService, BBModel, BaseModel) {
     var Admin_Administrator;
     return Admin_Administrator = (function(superClass) {
       extend(Admin_Administrator, superClass);
@@ -81,10 +82,14 @@
         Admin_Administrator.__super__.constructor.call(this, data);
       }
 
+      Admin_Administrator.$query = function(params) {
+        return AdminAdministratorService.query(params);
+      };
+
       return Admin_Administrator;
 
     })(BaseModel);
-  }]);
+  });
 
 }).call(this);
 
@@ -93,7 +98,7 @@
   var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
-  angular.module('BB.Models').factory("Admin.UserModel", ["$q", "BBModel", "BaseModel", function($q, BBModel, BaseModel) {
+  angular.module('BB.Models').factory("Admin.UserModel", function($q, BBModel, BaseModel) {
     var Admin_User;
     return Admin_User = (function(superClass) {
       extend(Admin_User, superClass);
@@ -115,12 +120,13 @@
       return Admin_User;
 
     })(BaseModel);
-  }]);
+  });
 
 }).call(this);
 
 (function() {
-  angular.module('BBAdmin.Services').factory('AdminAdministratorService', ["$q", "BBModel", function($q, BBModel) {
+  'use strict';
+  angular.module('BBAdmin.Services').factory('AdminAdministratorService', function($q, BBModel) {
     return {
       query: function(params) {
         var company, defer;
@@ -148,6 +154,6 @@
         return defer.promise;
       }
     };
-  }]);
+  });
 
 }).call(this);
