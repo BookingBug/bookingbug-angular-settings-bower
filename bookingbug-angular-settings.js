@@ -11,7 +11,8 @@
 }).call(this);
 
 (function() {
-  angular.module('BBAdminSettings').directive('adminTable', ["AdminCompanyService", "AdminAdministratorService", "$modal", "$log", "ModalForm", function(AdminCompanyService, AdminAdministratorService, $modal, $log, ModalForm) {
+  'use strict';
+  angular.module('BBAdminSettings').directive('adminTable', ["$log", "ModalForm", "BBModel", function($log, ModalForm, BBModel) {
     var controller, link;
     controller = function($scope) {
       $scope.getAdministrators = function() {
@@ -19,7 +20,7 @@
         params = {
           company: $scope.company
         };
-        return AdminAdministratorService.query(params).then(function(administrators) {
+        return BBModel.Admin.Administrator.$query(params).then(function(administrators) {
           $scope.admin_models = administrators;
           return $scope.administrators = _.map(administrators, function(administrator) {
             return _.pick(administrator, 'id', 'name', 'email', 'role');
@@ -52,7 +53,7 @@
       if (scope.company) {
         return scope.getAdministrators();
       } else {
-        return AdminCompanyService.query(attrs).then(function(company) {
+        return BBModel.Admin.Company.$query(attrs).then(function(company) {
           scope.company = company;
           return scope.getAdministrators();
         });
@@ -72,7 +73,7 @@
   var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
-  angular.module('BB.Models').factory("Admin.AdministratorModel", ["$q", "BBModel", "BaseModel", function($q, BBModel, BaseModel) {
+  angular.module('BB.Models').factory("Admin.AdministratorModel", ["$q", "AdminAdministratorService", "BBModel", "BaseModel", function($q, AdminAdministratorService, BBModel, BaseModel) {
     var Admin_Administrator;
     return Admin_Administrator = (function(superClass) {
       extend(Admin_Administrator, superClass);
@@ -80,6 +81,10 @@
       function Admin_Administrator(data) {
         Admin_Administrator.__super__.constructor.call(this, data);
       }
+
+      Admin_Administrator.$query = function(params) {
+        return AdminAdministratorService.query(params);
+      };
 
       return Admin_Administrator;
 
@@ -120,6 +125,7 @@
 }).call(this);
 
 (function() {
+  'use strict';
   angular.module('BBAdmin.Services').factory('AdminAdministratorService', ["$q", "BBModel", function($q, BBModel) {
     return {
       query: function(params) {
