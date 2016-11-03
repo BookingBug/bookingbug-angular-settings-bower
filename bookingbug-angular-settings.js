@@ -2,11 +2,16 @@
   'use strict';
   angular.module('BBAdminSettings', ['BB', 'BBAdmin.Services', 'BBAdmin.Filters', 'BBAdmin.Controllers', 'trNgGrid']);
 
-  angular.module('BBAdminSettings').config(function($logProvider) {
-    return $logProvider.debugEnabled(true);
-  });
-
   angular.module('BBAdminSettingsMockE2E', ['BBAdminSettings', 'BBAdminMockE2E']);
+
+}).call(this);
+
+(function() {
+  'use strict';
+  angular.module('BBAdminSettings').config(function($logProvider) {
+    'ngInject';
+    $logProvider.debugEnabled(true);
+  });
 
 }).call(this);
 
@@ -154,6 +159,27 @@
         return defer.promise;
       }
     };
+  });
+
+}).call(this);
+
+(function() {
+  'use strict';
+  angular.module('BBAdminSettings').config(function($translateProvider) {
+    'ngInject';
+    var translations;
+    translations = {
+      SETTINGS: {
+        ADMIN_TABLE: {
+          NEW_ADMINISTRATOR: 'New Administrator',
+          EDIT: '@:COMMON.BTN.EDIT'
+        },
+        ADMIN_FORM: {
+          PROGRESS_CANCEL: '@:COMMON.BTN.CANCEL'
+        }
+      }
+    };
+    $translateProvider.translations('en', translations);
   });
 
 }).call(this);
