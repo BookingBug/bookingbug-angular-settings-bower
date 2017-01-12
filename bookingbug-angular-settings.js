@@ -175,6 +175,7 @@
           EDIT: "@:COMMON.BTN.EDIT"
         },
         ADMIN_FORM: {
+          OK_BTN: "@:COMMON.BTN.OK",
           CANCEL_BTN: "@:COMMON.BTN.CANCEL"
         }
       }
