@@ -1,17 +1,23 @@
 (function() {
   'use strict';
-  angular.module('BBAdminSettings', ['BB', 'BBAdmin.Services', 'BBAdmin.Filters', 'BBAdmin.Controllers', 'trNgGrid']);
-
   angular.module('BBAdminSettings').config(["$logProvider", function($logProvider) {
-    return $logProvider.debugEnabled(true);
+    'ngInject';
+    $logProvider.debugEnabled(true);
   }]);
+
+}).call(this);
+
+(function() {
+  'use strict';
+  angular.module('BBAdminSettings', ['BB', 'BBAdmin.Services', 'BBAdmin.Filters', 'BBAdmin.Controllers', 'trNgGrid']);
 
   angular.module('BBAdminSettingsMockE2E', ['BBAdminSettings', 'BBAdminMockE2E']);
 
 }).call(this);
 
 (function() {
-  angular.module('BBAdminSettings').directive('adminTable', ["AdminCompanyService", "AdminAdministratorService", "$modal", "$log", "ModalForm", function(AdminCompanyService, AdminAdministratorService, $modal, $log, ModalForm) {
+  'use strict';
+  angular.module('BBAdminSettings').directive('adminTable', ["$log", "ModalForm", "BBModel", function($log, ModalForm, BBModel) {
     var controller, link;
     controller = function($scope) {
       $scope.getAdministrators = function() {
@@ -19,7 +25,7 @@
         params = {
           company: $scope.company
         };
-        return AdminAdministratorService.query(params).then(function(administrators) {
+        return BBModel.Admin.Administrator.$query(params).then(function(administrators) {
           $scope.admin_models = administrators;
           return $scope.administrators = _.map(administrators, function(administrator) {
             return _.pick(administrator, 'id', 'name', 'email', 'role');
@@ -52,7 +58,7 @@
       if (scope.company) {
         return scope.getAdministrators();
       } else {
-        return AdminCompanyService.query(attrs).then(function(company) {
+        return BBModel.Admin.Company.$query(attrs).then(function(company) {
           scope.company = company;
           return scope.getAdministrators();
         });
@@ -61,7 +67,7 @@
     return {
       controller: controller,
       link: link,
-      templateUrl: 'admin_table_main.html'
+      templateUrl: 'admin-table/admin_table_main.html'
     };
   }]);
 
@@ -72,7 +78,7 @@
   var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
-  angular.module('BB.Models').factory("Admin.AdministratorModel", ["$q", "BBModel", "BaseModel", function($q, BBModel, BaseModel) {
+  angular.module('BB.Models').factory("Admin.AdministratorModel", ["$q", "AdminAdministratorService", "BBModel", "BaseModel", function($q, AdminAdministratorService, BBModel, BaseModel) {
     var Admin_Administrator;
     return Admin_Administrator = (function(superClass) {
       extend(Admin_Administrator, superClass);
@@ -80,6 +86,10 @@
       function Admin_Administrator(data) {
         Admin_Administrator.__super__.constructor.call(this, data);
       }
+
+      Admin_Administrator.$query = function(params) {
+        return AdminAdministratorService.query(params);
+      };
 
       return Admin_Administrator;
 
@@ -120,6 +130,7 @@
 }).call(this);
 
 (function() {
+  'use strict';
   angular.module('BBAdmin.Services').factory('AdminAdministratorService', ["$q", "BBModel", function($q, BBModel) {
     return {
       query: function(params) {
@@ -148,6 +159,28 @@
         return defer.promise;
       }
     };
+  }]);
+
+}).call(this);
+
+(function() {
+  "use strict";
+  angular.module("BBAdminSettings").config(["$translateProvider", function($translateProvider) {
+    "ngInject";
+    var translations;
+    translations = {
+      SETTINGS: {
+        ADMIN_TABLE: {
+          NEW_ADMINISTRATOR: "New Administrator",
+          EDIT: "@:COMMON.BTN.EDIT"
+        },
+        ADMIN_FORM: {
+          OK_BTN: "@:COMMON.BTN.OK",
+          CANCEL_BTN: "@:COMMON.BTN.CANCEL"
+        }
+      }
+    };
+    $translateProvider.translations("en", translations);
   }]);
 
 }).call(this);
