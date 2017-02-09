@@ -1,0 +1,29 @@
+{
+  "name": "bookingbug-angular-settings",
+  "version": "master",
+  "homepage": "https://github.com/BookingBug/bookingbug-angular-settings-bower",
+  "authors": [
+    "Glenn Shoosmith <glenn@bookingbug.com>",
+    "Ed Clements <ed@bookingbug.com>"
+  ],
+  "main": [
+    "bookingbug-angular-settings.js",
+    "bookingbug-angular-settings-templates.js"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bookingbug-angular-core": "master",
+    "bookingbug-angular-admin": "master"
+  },
+  "resolutions": {
+    "angular": "1.2.28",
+    "bookingbug-angular-core": "master"
+  }
+}
